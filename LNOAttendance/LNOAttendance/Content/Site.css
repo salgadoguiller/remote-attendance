@@ -1,0 +1,63 @@
+﻿body {
+    background-image: url(/Images/background.png);
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+html, body {
+    height: 100%;
+}
+
+#body {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -100px;
+}
+
+footer {
+    height: 50px;
+}
+
+.navPerson ul li a{
+    color: #000000;
+}
+
+.navPerson ul li.active2 {
+    border-radius: 7px;
+    background-color: #000000;
+}
+
+.navPerson ul li.active2 a {
+    color: #FFFFFF;
+}
+
+.navPerson ul li :hover {
+    background-color: #E7E7E7;
+    color: #FFFFFF;
+}
+
+.navPerson ul li :focus {
+    background-color: #000000;
+}
+
+.navbarPerson ul li :hover {
+    background-color: #E7E7E7;
+    color: #FFFFFF;
+}
+
+.navbarPerson ul li :focus {
+    background-color: #E7E7E7;
+    color: #FFFFFF;
+}

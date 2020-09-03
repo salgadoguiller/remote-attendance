@@ -1,0 +1,410 @@
+﻿@using LNOAttendance.Models;
+@using System.Collections.Generic;
+@{
+    ViewBag.Title = "Add Permissions";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    string userName = (string)@ViewData["userName"];
+    string email = (string)@ViewData["email"];
+}
+
+@{
+    List<Employee> employees = (List<Employee>)ViewData["employees"];
+}
+<div class="col-md-10 col-md-offset-1">
+    <div class="col-md-3 navPerson" >
+        <br /><br />
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active2" id="employees"><a href="#" onclick="showEmployees();">Employees</a></li>
+            <li role="presentation" id="admins"><a href="#" onclick="showAdmins();">Administrator</a></li>
+            <li role="presentation" id="superAdmins"><a href="#" onclick="showSuperAdmins();">Super Administrator</a></li>
+        </ul>
+    </div>
+    
+    <div class="col-md-9" id="divSuperAdmins" style="display:none">
+        <br />
+        <h1>Super Administrators</h1>
+        <br />
+        <form method="post" id="formSA">
+            <input type="hidden" name="type" value="Super Admin">
+            <div class="form-group col-md-12">
+                <label for="listItemSA" id="employeesSelectSA" data-toggle="popover" data-trigger="manual" data-placement="right" data-content="You must select at least one employee.">Employees: </label> <br/>
+                <select class="form-control" size="20" multiple="multiple" name="listItem" id="listItemSA">
+                    @{
+                        foreach(Employee emp in @employees)
+                        {
+                            <option value="@emp.Email">@emp.Name -- @emp.Email </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="daysOpt" id="optDaysSA">Days Options: </label> <br/>
+                <input type="radio" name="daysOpt" value="one" id="oneSA" checked onclick="options('SA');"> One Day<br>
+                <input type="radio" name="daysOpt" value="range" id="rangeSA" onclick="options('SA');"> Range<br>
+                <input type="radio" name="daysOpt" value="allways" id="allwaysSA" onclick="options('SA');"> Always
+            </div>
+            <div class="form-group col-md-6" id="divStartDateSA" data-toggle="popover" data-trigger="manual" data-placement="top">
+                <label for="startDate" id="">Start Date: </label> <br/>
+                <div class='input-group date' id="startDateSA">
+                    <input type='text' class="form-control" id="inputStartDateSA" name="startDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-6" id="divEndDateSA" style="display:none" data-toggle="popover" data-trigger="manual" data-placement="top">
+                <label for="endDate" id="">End Date: </label> <br/>
+                <div class='input-group date' id="endDateSA">
+                    <input type='text' class="form-control" id="inputEndDateSA" name="endDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-12" style="clear:both;">
+                <button type="button" class="btn btn-default" onclick="validateForm('SA', 'formSA');">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-9" id="divAdmins" style="display:none;">
+        <br />
+        <h1>Administrators</h1>
+        <br />
+        <form method="post" id="formA">
+            <input type="hidden" name="type" value="Admin">
+            <div class="form-group col-md-12">
+                <label for="listItemA" id="employeesSelectA" data-toggle="popover" data-trigger="manual" data-placement="right" data-content="You must select at least one employee.">Employees: </label> <br/>
+                <select class="form-control" size="20" multiple="multiple" name="listItem" id="listItemA">
+                    @{
+                        foreach(Employee emp in @employees)
+                        {
+                            <option value="@emp.Email">@emp.Name -- @emp.Email </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="daysOpt" id="optDaysA">Days Options: </label> <br/>
+                  <input type="radio" name="daysOpt" value="one" id="oneA" checked onclick="options('A');"> One Day<br>
+                  <input type="radio" name="daysOpt" value="range" id="rangeA" onclick="options('A');"> Range<br>
+                  <input type="radio" name="daysOpt" value="allways" id="allwaysA" onclick="options('A');"> Always
+            </div>
+            <div class="form-group col-md-6" id="divStartDateA" data-toggle="popover" data-trigger="manual" data-placement="top">
+                <label for="startDate" id="">Start Date: </label> <br/>
+                <div class='input-group date' id="startDateA">
+                    <input type='text' class="form-control" id="inputStartDateA" name="startDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-6" id="divEndDateA" style="display:none" data-toggle="popover" data-trigger="manual" data-placement="top">
+                <label for="endDate" id="">End Date: </label> <br/>
+                <div class='input-group date' id="endDateA">
+                    <input type='text' class="form-control" id="inputEndDateA" name="endDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-12" style="clear:both;">
+                <button type="button" class="btn btn-default" onclick="validateForm('A', 'formA');">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-9" id="divEmployees">
+        <br />
+        <h1>Employees</h1>
+        <br />
+        <form method="post" id="form">
+            <input type="hidden" name="type" value="Employee">
+            <div class="form-group col-md-12">
+                <label for="employees" id="employeesSelect" data-toggle="popover" data-trigger="manual" data-placement="right" data-content="You must select at least one employee.">Employees: </label> <br/>
+                <select class="form-control" size="20" multiple="multiple" name="listItem" id="listItem">
+                    @{
+                        foreach(Employee emp in @employees)
+                        {
+                            <option value="@emp.Email">@emp.Name -- @emp.Email </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="daysOpt" id="optDays">Days Options: </label> <br/>
+                  <input type="radio" name="daysOpt" value="one" id="one" checked onclick="options('');"> One Day<br>
+                  <input type="radio" name="daysOpt" value="range" id="range" onclick="options('');"> Range<br>
+                  <input type="radio" name="daysOpt" value="allways" id="allways" onclick="options('');"> Always
+            </div>
+            <div class="form-group col-md-6" id="divStartDate" data-toggle="popover" data-trigger="manual" data-placement="top">
+                <label for="startDate" id="optDays">Start Date: </label> <br/>
+                <div class='input-group date' id="startDate">
+                    <input type='text' class="form-control" id="inputStartDate" name="startDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-6" id="divEndDate" style="display:none" data-toggle="popover" data-trigger="manual" data-placement="top">
+                <label for="endDate" id="optDays">End Date: </label> <br/>
+                <div class='input-group date' id="endDate">
+                    <input type='text' class="form-control" id="inputEndDate" name="endDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-12" style="clear:both;">
+                <button type="button" class="btn btn-default" onclick="validateForm('', 'form');">Add</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script src="../Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="../Alert/dist/sweetalert.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#startDateSA').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy'
+            });
+            $('#endDateSA').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy'
+            });
+            $('#startDateA').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy'
+            });
+            $('#endDateA').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy'
+            });
+            $('#startDate').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy'
+            });
+            $('#endDate').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy'
+            });
+        });
+
+        function options(procedence) {
+            opt = document.getElementById("one" + procedence);
+            if (opt.checked) {
+                var element = document.getElementById("divStartDate" + procedence);
+                element.style.display = "block";
+                var element = document.getElementById("divEndDate" + procedence);
+                element.style.display = "none";
+            }
+
+            opt = document.getElementById("range" + procedence);
+            if (opt.checked) {
+                var element = document.getElementById("divStartDate" + procedence);
+                element.style.display = "block";
+                var element = document.getElementById("divEndDate" + procedence);
+                element.style.display = "block";
+            }
+
+            opt = document.getElementById("allways" + procedence);
+            if (opt.checked) {
+                var element = document.getElementById("divStartDate" + procedence);
+                element.style.display = "none";
+                var element = document.getElementById("divEndDate" + procedence);
+                element.style.display = "none";
+            }
+        }
+
+        // ------------------------------------------------------------------------------
+        // Funcion:     validar los campos del formulario para asignar permisos.
+        // Parametros:  
+        //              procedence  ->  representa que formulario se esta validando.
+        //                              'SA'    ->  Super Admin
+        //                              'A'     ->  Admin
+        //                              ''      ->  Employee
+        //              idForm      -> identificador del formulario que se esta enviando.
+        // ------------------------------------------------------------------------------
+        function validateForm(procedence, idForm) {
+            // Validando que este seleccionado por lo menos un empleado.
+            if (procedence == '') {
+                if (document.getElementById("listItem" + procedence).selectedIndex == -1 && !document.getElementById("selectAll" + procedence).checked) {
+                    $('#employeesSelect' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#employeesSelect' + procedence).popover('hide');
+                    }, 2500);
+                    return false;
+                }
+            }
+            else {
+                if (document.getElementById("listItem" + procedence).selectedIndex == -1) {
+                    $('#employeesSelect' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#employeesSelect' + procedence).popover('hide');
+                    }, 2500);
+                    return false;
+                }
+            }
+            // Validando las fechas.
+            var startDate = new Date(document.getElementById("inputStartDate" + procedence).value);
+            var now = new Date();
+
+            // Un dia
+            opt = document.getElementById("one" + procedence);
+            if (opt.checked) {
+                if (startDate == "Invalid Date") {
+                    $('#divStartDate' + procedence).popover({ content: 'Please select date.' });
+                    $('#divStartDate' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#divStartDate' + procedence).popover('destroy');
+                    }, 2500);
+                    return false;
+                }
+                if ((startDate.getYear() < now.getYear()) ||
+                    (startDate.getYear() == now.getYear() && startDate.getMonth() < now.getMonth()) ||
+                    (startDate.getYear() == now.getYear() && startDate.getMonth() == now.getMonth() && startDate.getDate() < now.getDate())) {
+                    $('#divStartDate' + procedence).popover({ content: 'Incorrect date. This date has expired.' });
+                    $('#divStartDate' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#divStartDate' + procedence).popover('destroy');
+                    }, 2500);
+                    return false;
+                }
+
+                confirmForm(idForm);
+            }
+
+            // Rango
+            opt = document.getElementById("range" + procedence);
+            if (opt.checked) {
+                var endDate = new Date(document.getElementById("inputEndDate" + procedence).value);
+                if (startDate == "Invalid Date") {
+                    $('#divStartDate' + procedence).popover({ content: 'Please select date.' });
+                    $('#divStartDate' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#divStartDate' + procedence).popover('destroy');
+                    }, 2500);
+                    return false;
+                }
+                if (endDate == "Invalid Date") {
+                    $('#divEndDate' + procedence).popover({ content: 'Please select date.' });
+                    $('#divEndDate' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#divEndDate' + procedence).popover('destroy');
+                    }, 2500);
+                    return false;
+                }
+                if ((startDate.getYear() < now.getYear()) ||
+                    (startDate.getYear() == now.getYear() && startDate.getMonth() < now.getMonth()) ||
+                    (startDate.getYear() == now.getYear() && startDate.getMonth() == now.getMonth() && startDate.getDate() < now.getDate())) {
+                    $('#divStartDate' + procedence).popover({ content: 'Incorrect date. This date has expired.' });
+                    $('#divStartDate' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#divStartDate' + procedence).popover('destroy');
+                    }, 2500);
+                    return false;
+                }
+                if (startDate > endDate) {
+                    $('#divEndDate' + procedence).popover({ content: 'Incorrect date. Start date is greater than the end date.' });
+                    $('#divEndDate' + procedence).popover('show');
+                    setTimeout(function () {
+                        $('#divEndDate' + procedence).popover('destroy');
+                    }, 2500);
+                    return false;
+                }
+
+                confirmForm(idForm);
+            }
+
+            opt = document.getElementById("allways" + procedence);
+            if (opt.checked) {
+                confirmForm(idForm);
+            }
+        }
+
+        // ------------------------------------------------------------------------------
+        // Funcion:     mostrar una alerta para confirmar o cancelar el envio del formulario.
+        // Parametros:  
+        //              id  ->  identificador del formulario que se envia.
+        // ------------------------------------------------------------------------------
+        function confirmForm(id) {
+            swal({
+                title: "¿Esta seguro?",
+                text: "Presione \"Confirmar\" si desea continuar.",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Confirmar",
+                closeOnConfirm: false
+            },
+            function () {
+                document.getElementById(id).submit();
+                // document.update.submit();
+            });
+        }
+
+        function showSuperAdmins() {
+            var element = document.getElementById("divSuperAdmins");
+            element.style.display = "block";
+            var element = document.getElementById("superAdmins");
+            element.classList.add("active2");
+
+            var element = document.getElementById("divAdmins");
+            element.style.display = "none";
+            var element = document.getElementById("admins");
+            element.classList.remove("active2");
+
+            var element = document.getElementById("divEmployees");
+            element.style.display = "none";
+            var element = document.getElementById("employees");
+            element.classList.remove("active2");
+        }
+
+        function showAdmins() {
+            var element = document.getElementById("divSuperAdmins");
+            element.style.display = "none";
+            var element = document.getElementById("superAdmins");
+            element.classList.remove("active2");
+
+            var element = document.getElementById("divAdmins");
+            element.style.display = "block";
+            var element = document.getElementById("admins");
+            element.classList.add("active2");
+
+            var element = document.getElementById("divEmployees");
+            element.style.display = "none";
+            var element = document.getElementById("employees");
+            element.classList.remove("active2");
+        }
+
+        function showEmployees() {
+            var element = document.getElementById("divSuperAdmins");
+            element.style.display = "none";
+            var element = document.getElementById("superAdmins");
+            element.classList.remove("active2");
+
+            var element = document.getElementById("divAdmins");
+            element.style.display = "none";
+            var element = document.getElementById("admins");
+            element.classList.remove("active2");
+
+            var element = document.getElementById("divEmployees");
+            element.style.display = "block";
+            var element = document.getElementById("employees");
+            element.classList.add("active2");
+        }
+    </script>
+}

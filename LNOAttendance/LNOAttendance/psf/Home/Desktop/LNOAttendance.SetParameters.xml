@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="LNO Attendance" />
+  <setParameter name="DefaultConnection-Web.config Connection String" value="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-LNOAttendance-20160214123111.mdf;Initial Catalog=aspnet-LNOAttendance-20160214123111;Integrated Security=True" />
+  <setParameter name="AnvizDatabaseCS-Web.config Connection String" value="Data Source=localhost;Initial Catalog=Anviz_Data_Base;Integrated Security=False;User Id=remoteAuth;Password=123456;MultipleActiveResultSets=True" />
+</parameters>

@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="../Alert/dist/sweetalert.css" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="../Images/favicon.png" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="body">
+        <nav class="navbar navbar-inverse" style="clear:both">
+            <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                @if(Convert.ToString(Session["role"]) != "Any") 
+                {
+                    @Html.ActionLink("LNO Honduras - Attendance Web Registration", "main", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                }
+                else
+                {
+                    <a class="navbar-brand" href="#">LNO Honduras - Attendance Web Registration</a>
+                }
+            </div>
+            
+            @if(Convert.ToString(Session["validated"]) == "1")
+            {
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        @if(Convert.ToString(Session["role"]) == "Super Admin" || Convert.ToString(Session["role"]) == "Admin")
+                        {
+                            <li class="dropdown navbarPerson">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Permissions<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Add", "addPermissions", "Home")</li>
+                                    <li>@Html.ActionLink("Remove", "removePermissions", "Home")</li>
+                                </ul>
+                            </li>
+                        }
+                        @if(Convert.ToString(Session["role"]) != "Any")
+                        {
+                            <li>@Html.ActionLink("Check Attendance", "main", "Home")</li>
+                        }           
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown navbarPerson">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Session["userName"]<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Log Out", "logOut", "Account")</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            }
+            
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="container body-content">
+            <br />
+            
+            @if((int)ViewData["typeMsg"] == 1 )
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> @ViewData["msg"]
+                </div>
+            }
+
+            @if((int)ViewData["typeMsg"] == 2 )
+            {
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> @ViewData["msg"]
+                </div>
+            }
+        </div>
+
+        @RenderBody()
+
+    </div>
+    <footer style="clear:both;">
+        <center>
+            <hr />
+            <p>&copy; @DateTime.Now.Year - LNO Honduras</p>
+        </center>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

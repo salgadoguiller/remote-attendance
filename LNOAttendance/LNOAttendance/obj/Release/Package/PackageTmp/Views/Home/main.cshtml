@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Main";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    string userName = (string)@ViewData["userName"];
+    string email = (string)@ViewData["email"];
+}
+
+<div class="container body-content">
+    <br />
+    <div class="jumbotron">
+        <h3>Welcome <strong><i>@ViewData["userName"]</i></strong> to Attendance Web Registration LNO-Honduras.</h3>
+        <p>Please select an option and click <i>Submit</i>.</p>
+    </div>
+    <br />
+
+    @if(Convert.ToString(Session["role"]) == "Any")
+    {
+        <div class="jumbotron">
+            <h1>Sorry you do not have permissions.</h1>
+            <p>Please contact your <strong>Manager</strong> or <strong>HR Team</strong>.</p>
+            <p id="closed"></p>
+        </div>
+    }
+    else
+    {
+        <div class="panel panel-default">
+            <!--
+                <div class="panel-heading">
+                    <h3 class="panel-title">Attendance</h3>
+                </div>
+            -->
+            <div class="panel-body">
+                <div class="col-md-4 col-md-offset-4">
+                    <form class="form-horizontal" method="POST" action="checkAttendance">
+                        <input type="hidden" name="userName" value="@userName">
+                        <input type="hidden" name="email" value="@email">
+                        <div class="form-group">
+                            <label for="select" class="control-label">Options </label>
+                            <div class="">
+                                <select class="form-control" name="option">
+                                    <option value="in">In</option>
+                                    <option value="out">Out</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input type="submit" class="btn btn-default" value="Submit" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts
+{
+    @if(Convert.ToString(Session["role"]) == "Any")
+    {
+        <script>
+            $(document).ready(function () {
+                closed();
+            });
+            
+            var seconds = 10;
+
+            function closed() {
+                document.getElementById('closed').innerHTML = 'Session is closed in ' + seconds + ' seconds...';
+
+                if (seconds == 0) {
+                    window.location = '../Account/logOut';
+                } else {
+                    seconds = seconds - 1;
+                    /* Ejecutamos nuevamente la función al pasar 1000 milisegundos (1 segundo) */
+                    setTimeout('closed()', 1000);
+                }
+            }
+        </script>
+    }
+}
